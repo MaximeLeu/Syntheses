@@ -1,0 +1,333 @@
+\documentclass[en]{sourcefiles/eplexam} 
+\usepackage{physics}
+\usepackage{tikz}
+
+\usepackage{fdsymbol}
+\usepackage{float}
+
+\newcounter{choice}
+\renewcommand\thechoice{\textbf{\Alph{choice}}}
+\newcommand\choicelabel{\thechoice$\quad$}
+
+\newenvironment{choices}%
+  {\list{\choicelabel}%
+     {\usecounter{choice}\def\makelabel##1{\hss\llap{##1}}%
+       \settowidth{\leftmargin}{W.\hskip\labelsep\hskip 2.5em}%
+       \def\choice{%
+         \item
+       } % choice
+       \labelwidth\leftmargin\advance\labelwidth-\labelsep
+       \topsep=0pt
+       \partopsep=0pt
+     }%
+  }%
+  {\endlist}
+
+\hypertitle{Communication Network}{7}{ELEC}{2920}{2017}{January}{All}
+{Brieuc Balon \and Maxime Leurquin}
+{Sebastien Lugan and Benoit Macq}
+
+\begin{document}
+\noindent A good answer is marked positively, a wrong/absent answer is marked negatively (-2). Each question is worth 4 points. A club suit ($\clubsuit$) symbol in front of the question denotes the possibility that there might be zero, one or multiple correct assertions. 
+\section{Multimedia and security}
+\subsection{Multimedia streaming}
+\textbf{Question 1} $\clubsuit$ Streaming protocols 
+\begin{choices}
+     \choice The impact of the network jitter could be mitigated by increasing the size of the buffer
+     \choice Content delivery network work by uploading (pushing) the content to the client device before even requests it (content preloading) in order to compensate for network delays
+     \choice Adaptative playout delay exploits the silent periods between talk spurts to dynamically adjust the playout delay depending on the estimate network delay.
+     \choice RTSP is a media streaming protocol providing the user a control over the playback of video streams (e.g: rewind, pause, fast forward, etc.)
+     \choice None of these answers are correct
+\end{choices}
+\begin{solution}
+The answers are \textbf{A}, \textbf{C} and \textbf{D}.\\
+
+\noindent \textbf{A} : For detail about this see Jan 2015 Q14.
+
+\noindent \textbf{B} : A content delivery network, or content distribution network (CDN), is a geographically distributed network of proxy servers and their data centers. The goal is to provide high availability and performance by distributing the service spatially relative to end users.\\
+
+\noindent \textit{What is the relationship between RTP, RTCP and RTSP?}\footnote{\url{https://www.cs.columbia.edu/~hgs/rtsp/faq.html}}
+\begin{itemize}
+    \item RTP is a transport protocol for the delivery of real-time data, including streaming audio and video. It typically runs over UDP but can run over TCP as well.
+    \item RTCP is a part of RTP and helps with lip synchronization and QOS management, among others.
+    \item RTSP is a control protocol that initiating and directing delivery of streaming multimedia from media servers,  RTSP does not deliver data. RTSP provides "VCR-style" control functionality such as pause, fast forward, reverse, and absolute positioning, which is beyond the scope of RTP
+    \item  RTP and RTSP will likely be used together in many systems, but either protocol can be used without the other.
+\end{itemize}
+
+
+\end{solution}
+
+
+
+\textbf{Question 2} $\clubsuit$ SCTP...
+\begin{choices}
+     \choice Can provide a minimum guaranteed bandwidth and maximum delay
+     \choice Provides multi-homing, that is the ability to (e.g.) reach one end as long as at least one of the IP addresses listed with this end is reachable from the other end
+     \choice Could optionally provide reliability and reordering
+     \choice Allows more than one stream to flow through a single association (an association is the SCTP equivalent of a connection for TCP)
+     \choice None of these answers are correct
+\end{choices}
+\begin{solution}
+The answers are \textbf{B}, \textbf{C} and \textbf{D}.\\
+
+The Stream Control Transmission Protocol (SCTP) is a computer networking transport protocol.
+\begin{itemize}
+    \item It provides reliable transmission of both ordered and unordered data streams. 
+    \item It allows more than one stream to flow through a single connection.
+    \item It provides multi-homing (= allows multiple IP addresses per endpoint.)
+    \item It requires message boundaries (like UDP) and does not support streaming of bytes without them.
+\end{itemize}
+
+
+\end{solution}
+
+
+
+
+
+\textbf{Question 3} $\clubsuit$ Audio/video compression
+\begin{choices}
+     \choice The MPEG4 codec allows to transport high resolution video over channels with quite low bandwidth by using efficient lossy video compression
+     \choice In order to transport a telephone signal with a maximum frequency of 4000 Hz quantified on 8 bits over 64kb/s channel, a lossy audio compression is required
+     \choice In order to transport a stereo audio signal with a maximum frequency of 22050 Hz quantified on 16 bits over a 1.411 Mb/s channel, a lossy audio compression is required
+     \choice A stereo, 16-bit audio signal sampled at 44100 Hz could be transported over a 160kb/s channel by using a lossy audio compression such as MPEG 1 layer 3 (generally abusively called "MP3")
+     \choice None of these answers are correct
+\end{choices}
+\begin{solution}
+The answers are \textbf{A} and \textbf{D}.\\
+
+
+\noindent \textbf{A} : MPEG-4 is a method of defining compression of audio and visual (AV) digital data. Initially, MPEG-4 was aimed primarily at low-bit-rate video communications; however, its scope as a multimedia coding standard was later expanded. MPEG-4 is efficient across a variety of bit rates ranging from a few kilobits per second to tens of megabits per second\\
+
+\noindent \textbf{B} : An analog signal is sampled at a constant rate, for telephone it's 8000 samples/s (hence the 4kHz max frequency, recall nyquist's theorem) and for CD music it's 44100 samples/s. Each sample is then quantized, such that it can only take $2^8=256$ distinct values. Those 256 values are therefore encoded on 8 bits. The channel must be $8 \cdot (4000 \cdot 2) = 64$kb/s in order to respect the Nyquist criterion. No compression is needed.\\
+
+\noindent \textbf{C} : The same logic used for \textbf{B} can be applied to see that the bitrate of a signal sampled at 44100Hz and quantized on 16 bits requires a bitrate of 705,6 kb/s per channel ($16 \cdot 22050 \cdot 2 = 705.6$kb/s). As the signal is stereo it requires 2 channels and thus the bitrate is doubled, reaching 1.4112Mb/s. Assuming the statement rounded the number, the 1.411Mb/s channel won't require lossy compression.\\
+
+
+\noindent \textbf{D} : Again the same logic as C can be applied to see that for a non lossy transmission a channel of 1.411Mb/s is required. Compression is thus needed to transmit it on a 160kb/s channel. 
+\begin{itemize}
+    \item 14 selected bit rates are allowed in MPEG-1 Audio Layer III standard: 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256 and 320 kbit/s, along with the 3 highest available sampling frequencies of 32, 44.1 and 48 kHz
+    \item MPEG-2 Audio Layer III also allows 14 somewhat different (and mostly lower) bit rates of 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160 kbit/s with sampling frequencies of 16, 22.05 and 24 kHz which are exactly half that of MPEG-1.
+    \item MPEG-2.5 Audio Layer III frames are limited to only 8 bit rates of 8, 16, 24, 32, 40, 48, 56 and 64 kbit/s with 3 even lower sampling frequencies of 8, 11.025, and 12 kHz.
+\end{itemize}
+\end{solution}
+
+
+
+
+
+\textbf{Question 4} $\clubsuit$ Classes of multimedia applications
+\begin{choices}
+     \choice Live multimedia streaming allows interactivity: rewind, pause, fast forward, etc.
+     \choice Multimedia streaming applications are generally quite loss tolerant
+     \choice Network jitter is critical for interactive, real-time applications
+     \choice Network delay is critical for stored streaming applications
+     \choice None of these answers are correct
+\end{choices}
+\begin{solution}
+The answers are \textbf{B} and \textbf{C}.\\
+
+\noindent \textbf{A} : Live streaming does not requires a reliable transport protocol and is loss tolerant. It could use UDP. It does not support fast forward, but does support rewind and pause.\\
+
+\noindent \textbf{B} : Losing a frame of a stream is not dramatic and the user will probably not even notice it thus multimedia streaming is loss tolerant.\\
+
+\noindent \textbf{C} : Network delays and network jitter are critical for interactive, real time applications.
+
+
+\noindent 
+\end{solution}
+
+
+
+
+\textbf{Question 5} $\clubsuit$ Interactive streaming 
+\begin{choices}
+     \choice In order to maximize the interactive experience of the user, RTP only supports TCP as transport protocol
+     \choice SIP is a voice over IP control protocol providing the ability to place a call, locate the callee, negotiate the most adequate (audio/video) codecs to use, invite others, transfer calls, etc.
+     \choice In order for Alice to call Bob using SIP, Alice first contacts her SIP proxy, which will in turn contact Bob's registrar server which will forward the call request ("invite") to Bob
+     \choice RTP is a media streaming control protocol aimed at controlling the audio and video streams transported using SIP protocol
+     \choice None of these answers are correct
+\end{choices}
+\begin{solution}
+The answers are \textbf{B} and \textbf{C}.\\
+
+
+\noindent \textbf{A} : The Real-time Transport Protocol (RTP) is a network protocol for delivering audio and video over IP networks. RTP typically runs over UDP but \textit{can} run on TCP as well.\\
+
+\noindent \textbf{B,C \& D} :  The Session Initiation Protocol (SIP) is used to initiate a session between two endpoints. SIP does not carry any voice or video data itself - it merely allows two endpoints to set up connection to transfer that traffic between each other via the Real-time Transport Protocol (RTP).
+The SIP protocol can be, and usually is, routed through one or more SIP proxy servers before reaching its destination.\\
+
+\noindent If we want to send a SIP message to Bob’s phone, we needs to know the IP Address of Bob’s phone. There are $2^{32}$ IPv4 addresses, so finding Bob may take a while.
+Bob could let us know his IP address, but what if Bob’s IP changes? If he’s using a Softphone while he’s out to lunch and a desk phone once he gets back to the office. How do we find Bob?\\
+
+\noindent SIP manages this using a SIP Registrar, essentially, when Bob goes out to lunch and starts his softphone app, the softphone checks in with the Registrar and lets the Registrar know what IP to find Bob on now (the softphone’s IP).
+When he gets back to the office he closes the softphone app, as it shuts down it checks in with the Registrar again to let it know Bob’s not using the softphone any more.\\
+
+\noindent So a Registrar keeps track of the IP address you can find a SIP endpoint on.
+\end{solution}
+
+
+
+
+
+\subsection{Security}
+\textbf{Question 6} $\clubsuit$ In order to securely send an e-mail to Bob (so that only him could read its content)...
+\begin{choices}
+     \choice In order to increase the performances, Alice could first encrypt her message using a symmetric key algorithm using a random session key, then send the (symmetrically) encrypted message altogether with the session key encrypted with Bob's public key
+     \choice In order to increase the performances, Alice should hash her message, encrypt it with Bob's public key and send the encrypted hash to Bob
+     \choice If she wants to also prove to Bob that she is the author of the message, she could hash her message, encrypt the hash with her private key, encrypt her original message along with the encrypted hash using a random symmetric key, and send this resulting (symmetrically) encrypted message to Bob along with the session key encrypted with Bob's public key
+     \choice Alice should first encrypt her message using a symmetric key algorithm using a random session key, then send the encrypted message altogether with the session key encrypted with her own private key (so that Bob could decrypt it using her public key)
+     \choice None of these answers are correct.
+\end{choices}
+\begin{solution}
+The answers are \textbf{A} and \textbf{C}. \\
+
+\noindent \textbf{A} : Symmetric algorithms are less complex and usually faster than asymmetric algorithms. Bob will have to use his private key to decrypt Alice message. In the message he will find the key Alice included, and an encrypted bloc. He will use the symmetric key Alice provided to decrypt the encrypted bloc. Using the symmetric key to encrypt is much more efficient than if the message was encrypted with Bob's public key.\textcolor{red}{justification foireuse, a refaire.}\\ 
+
+\noindent \textbf{B} is not correct because Bob receives the hash value of the message. By definition, it is impossible to retrieve a message from its hash value (as their could be multiple messages with a same resulting hash, and the hash function is not invertible). The hash is computed upon reception of the message and compared to the one the sender included in the message to see if the message has been modified. \\
+
+\noindent \textbf{C} : see Q20 of 2015 exam for more details.\\
+
+\noindent \textbf{D} is false because if Alice encrypts the message with her private key anyone can decrypt it. Because Alice's public key is known by everyone not only Bob could read the e-mail.
+\end{solution}
+
+
+
+
+
+\textbf{Question 7} $\clubsuit$ Cryptographic hash function
+\begin{choices}
+     \choice If Alice wants to prove to Bob that she is the author of a given message, she simply has to hash it and to provide to Bob the original message together with the computed hash. 
+     \choice It should be computationally hard to generate two distinct messages sharing the same hash value
+     \choice By sending to Bob the original message together with the corresponding hash, Alice proves to Bob that the message has not been altered by any man-in-the-middle attacker
+     \choice Only a single message corresponds to a given hash
+     \choice None of these answers are correct
+\end{choices}
+\begin{solution}
+The answer is \textbf{B}\\
+\noindent \textbf{A} : is false because anyone can compute the hash. As the message is sent in clear, the hash of the message can be computed by anyone and not only Alice. See the principle of digital signatures explained in Q9.\\
+
+\noindent \textbf{C} : is false because an attacker can modify the message, recompute its hash and the message would be valid. In this case the hash only provides protection against transmission errors.\\
+
+\noindent \textbf{D} : Ideally this would be true, but practically this is false because no hash function is perfect in this regard.
+\end{solution}
+
+
+
+
+
+\textbf{Question 8} $\clubsuit$ Symmetric and public-key cryptography
+\begin{choices}
+     \choice If Alice wants to send an encrypted message to Bob using public-key cryptography, she has to encrypt her message using her private key, and Bob will be able to decrypt it using his own private key
+     \choice In order to transmit a public key over a public network, we must encrypt it using a symmetric algorithm before sending it to the destination
+     \choice A symmetric cryptography algorithm such as AES is much slower than RSA and should thus never be used to directly encrypt a big message
+     \choice A mono alphabetic substitution cipher is an example of symmetric cryptography, the key being the substitution pattern
+     \choice None of these answers are correct
+\end{choices}
+\begin{solution}
+The answer is \textbf{D}.\\
+\textbf{A} is false because if Alice encrypts her message with her own private key then Bob (and anyone) can decrypt it with Alice's public key. Bob private key will not work to decrypt it.\\
+
+\noindent \textbf{B} is false because public key cryptography does not need any exchange of key. The public keys, known by everyone, are used for encryption and the privates ones for decryption.\\
+
+\noindent \textbf{C} is false. Symmetric keys are less complex than public keys. Therefore they are quicker. \\
+
+\noindent \textbf{D} : This is like the Caesar cypher (each letter in the message is replaced by a letter some fixed number of positions down the alphabet). The key(=the number of letters we shifted in the alphabet) is the same to decrypt and to encrypt, thus it is a symmetric algorithm.
+\end{solution}
+
+
+
+
+
+\textbf{Question 9} $\clubsuit$ Digital signature
+\begin{choices}
+     \choice In order to specifically prove to Bob that she is the author of a message, Alice could hash it, encrypt it with Bob's public key, and send the original message altogether with the encrypted hash to Bob
+     \choice In order to prove to Carol that she is the author of a message, Alice could alternatively hash her message encrypt it using a symmetric key algorithm such as AES using symmetric key she shares with Bob and send the original message together with the resulting encrypted hash to Carol
+     \choice Depending on the application, Alice could either encrypt the hash of her message with her private key or provide the hash of the original message directly encrypted with her public key
+     \choice In order to prove to Bob that she is the author of a (big) message, Alice should encrypt it with her private key, hash it and send the original message altogether with the hash of the encrypted message to Bob
+     \choice None of these answers are correct.
+\end{choices}
+\begin{solution}
+The answer is \textbf{E}.\\
+\noindent \textbf{A} is false Alice should have used her private key.\\
+
+\noindent \textbf{B} is false. Why using the symmetric key of the Bob and Alice session to encrypt message for Alice and Carol communication ?\\
+
+\noindent \textbf{C} is false. The first part of the statement is true but the second, with the public key, is not. Anyone could have done the encryption because of the use of the public key.\\
+
+\noindent \textbf{D} : False, see the paragraph about digital signatures below.\\
+
+
+\noindent \textbf{About digital signatures} : To digitally sign a document, first the author hashes it, and then encrypt it with his \textbf{\textit{private}} key. He then sends the encrypted hash, along with the original document to the recipient. To validate the data's integrity, the recipient first uses the signer's public key to decrypt the digital signature.\\
+The recipient then uses the same hashing algorithm that generated the original hash to generate a new one-way hash of the same data.\\
+\noindent Finally, the recipient compares the two hash values. If the hashes match:
+\begin{itemize}
+    \item the recipient can be assured that the public key used to decrypt the digital signature corresponds to the private key used to create the digital signature. Confirming the identity of the signer also requires some way of confirming that the public key truly belongs to a particular person or other entity. Digital certificates and authentication are used in this case.
+    \item the document was not tampered with.\footnote{\url{https://www.ibm.com/docs/en/ztpf/1.1.0.14?topic=concepts-digital-signatures}}
+\end{itemize}
+\end{solution}
+
+
+
+
+
+
+\subsection{DVB}
+\textbf{Question 10} $\clubsuit$ DVB
+\begin{choices}
+     \choice DVB is only designed for error free environments
+     \choice DVB only allows the transport of uncompressed audio and video signals 
+     \choice Several programs could be carried over the sames channel (e.g. through the same transponder)
+     \choice Several audio and/or video channels and/or other streams could be associated to a single program (providing e.g. different languages, subtitles, etc.)
+     \choice None of these answers are correct
+\end{choices}
+\begin{solution}
+The answers are \textbf{C} and \textbf{D}.\\
+
+\textbf{C \& D} : See multistream. \url{https://wiki.openpli.org/Multistream}
+\end{solution}
+
+
+
+
+
+\textbf{Question 11} $\clubsuit$ DVB...
+\begin{choices}
+     \choice could be used for satellite, terrestrial (radio) as well as cable television
+     \choice could be secured by conditional access through the use of control words encrypted as ECM (entitlement control messages)
+     \choice is a protocol aimed at streaming television channels through internet
+     \choice is based on MPEG-2 TS
+     \choice None of these answers are correct
+\end{choices}
+\begin{solution}
+The answers are \textbf{A}, \textbf{B} and \textbf{D}.\\
+
+
+\noindent \textbf{A} :  Indeed DVB-S, DVB-T and DVB-C exist.\\
+
+\noindent \textbf{B} :  
+Under the Digital Video Broadcasting (DVB) standard, conditional access system (CAS) standards are defined in the specification documents for DVB-CA (conditional access), DVB-CSA (the common scrambling algorithm) and DVB-CI (the Common Interface). These standards define a method by which one can obfuscate a digital-television stream, with access provided only to those with valid decryption smart-cards.\\
+
+\noindent This is achieved by a combination of scrambling and encryption. The data stream is scrambled with a 48-bit secret key, called the control word. Knowing the value of the control word at a given moment is of relatively little value, as under normal conditions, content providers will change the control word several times per minute. The control word is generated automatically in such a way that successive values are not usually predictable.\\
+
+\noindent In order for the receiver to unscramble the data stream, it must be permanently informed about the current value of the control word. In practice, it must be informed slightly in advance, so that no viewing interruption occurs. Encryption is used to protect the control word during transmission to the receiver: the control word is encrypted as an entitlement control message (ECM). The CA subsystem in the receiver will decrypt the control word only when authorised to do so; that authority is sent to the receiver in the form of an entitlement management message (EMM). The EMMs are specific to each subscriber, as identified by the smart card in his receiver, or to groups of subscribers, and are issued much less frequently than ECMs, usually at monthly intervals.\\
+This being apparently not sufficient to prevent unauthorized viewing, some providers lowered this interval down to a few minutes. This can be different for every provider. The contents of ECMs and EMMs are not standardized and as such they depend on the conditional access system being used.\\
+
+\noindent The control word can be transmitted through different ECMs at once. This allows the use of several conditional access systems at the same time, a DVB feature called simulcrypt (or multicrypt), which saves bandwidth and encourages multiplex operators to cooperate.\footnote{\url{https://en.wikipedia.org/wiki/Conditional_access}}\\
+
+
+
+
+
+\noindent \textbf{C} : DVB has nothing to do with streaming through internet, that's the job of IPTV. DVB systems distribute data using a variety of approaches, including: satellite, cable (rf signals through coax cables), terrestrial television (=radio waves), microwave.\\
+
+
+\noindent \textbf{D} : MPEG transport stream (MPEG-TS, MTS) or simply transport stream (TS) is a standard digital container format for transmission and storage of audio, video, and Program and System Information Protocol (PSIP) data. It is used in broadcast systems such as DVB, ATSC and IPTV.
+\end{solution}
+
+
+
+
+
+
+\end{document}
